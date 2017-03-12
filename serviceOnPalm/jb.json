@@ -1,0 +1,42 @@
+﻿{
+	"toptitle":{
+		"text":"网络不良信息举报",
+		"color":"text-3c ",
+		"backdata":{
+			"img":"img/left.png",
+			"act":"crj_form.html"
+		}
+	},
+	"listdata":[
+		{
+			"type":"mainmenu2",
+			"datalist":[
+				{
+					"img":"img/dxzp.png",
+					"act":"dxjb.html",
+					"text":"举报垃圾短信"
+				},
+				{
+					"img":"img/dhzp.png",
+					"text":"举报诈骗电话"
+				},
+				{
+					"img":"img/jbdh.png",
+					"text":"举报骚扰电话"
+				},
+				{
+					"img":"img/dh.png",
+					"text":"举报网站"
+				},
+				{
+					"img":"img/jbyy.png",
+					"text":"举报手机应用"
+				},
+				{
+					"img":"img/jbgr.png",
+					"text":"举报个人信息泄露"
+				}
+			]
+		}
+	]
+}

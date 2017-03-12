@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>出入境</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <script src="js/rem.js"></script> 
+    <script src="js/jquery.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="css/page.css"/>
+    <link rel="stylesheet" type="text/css" href="css/all.css"/>
+    <link rel="stylesheet" type="text/css" href="css/mui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/loaders.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/loading.css"/>
+    <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+	<link rel="stylesheet" type="text/css" href="css/add.css"/>
+	<script type="text/javascript">
+		$(window).load(function(){
+			$(".loading").addClass("loader-chanage")
+			$(".loading").fadeOut(300)
+		})
+	</script>
+</head>
+<!--loading页开始-->
+<div class="loading">
+	<div class="loader">
+        <div class="loader-inner pacman">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+	</div>
+</div>
+<!--loading页结束-->
+	<body class="bag-fff">
+		<div id="main" class="mui-clearfix">
+
+			<div id="toptitle" class="header-title">
+			</div>
+			<div id = "list" class="list2">
+			</div>
+		</div>
+	   </div>
+	</body>
+	<script >
+
+		/*jsonstr ='{"toptitle":{"text":"出入境","bgcolor":"bag-blue","color":"text-fff ","backdata":{"img":"img/left.png","act":"crj_bdjm.html"}},"listdata":[{"type":"text-r-a","text":"查看申请须知","act":"jb.html"},{"type":"text-n","text":"上海出入境管理局友情提醒；请在填写资料时保持无线信号稳定。尽量在WIFI 4G 3G环境下使用。以确保您可以一次性发送成功。"},{"type":"formcss","datalist":[{"type":"l_input","placeholder":"请输入18位省份证号码","text":"省份证号码"},{"type":"l_input","placeholder":"请输入中文姓","text":"中文姓"},{"type":"l_input","placeholder":"请输入拼音姓","text":"拼音姓"},{"type":"l_input","placeholder":"请输入中文名","text":"中文名"},{"type":"l_input","placeholder":"请输入您的拼音名","text":"拼音名"},{"type":"l_input","placeholder":"请输入移动电话","text":"移动电话"},{"type":"l_input","placeholder":"请输入紧急联系人","text":"紧急联系人"},{"type":"l_input","placeholder":"请输入紧急联系人电话","text":"紧急联系人电话"},{"type":"btn","datalist":[{"text":"返回","act":""},{"text":"下一步","act":"dxjb.html"}]}]}]}';
+		e = JSON.parse(jsonstr);
+		initUI(e);*/
+		
+		var dataroot="crj_form.json"; 
+		var e;
+		$.getJSON(dataroot, function(data){ 
+			e = data;
+			initUI(e);
+		});
+		
+		function initUI(e)
+		{
+			createTitle(e);
+			createList(e);
+			createmenu(e);
+		}
+		
+		function createTitle(e)
+		{
+			var infoList = Array();
+			
+			if(e.toptitle)
+			{
+				infoList.push('	<div class=" header-top text-center   relative '+getString(e.toptitle.bgcolor) + ' ' + getString(e.toptitle.color) +'">');
+				infoList.push('		<span class="f36">'+ getString(e.toptitle.text) +'</span>');	
+				
+				if(e.toptitle.backdata)
+				{
+					infoList.push('<a href="'+ e.toptitle.backdata.act+'">');
+					infoList.push('	<div class="header-back">');
+					infoList.push('		<img src="'+ e.toptitle.backdata.img+'" />');
+					infoList.push('	</div>');
+					infoList.push('</a>');
+				}
+				
+				infoList.push('	</div>');		
+			}
+			
+			$("#toptitle").html(infoList.join(''));
+		}
+		
+		function createList(e)
+		{
+			var infoList = Array();
+			for (var i = 0; i < e.listdata.length; i++) {
+				if(e.listdata[i].type == "cation")
+				{
+					infoList.push(createCation(e.listdata[i]));
+				}
+				
+				if(e.listdata[i].type == "mainmenu")
+				{
+					infoList.push(createMainmenu(e.listdata[i]));
+				}
+				
+				if(e.listdata[i].type == "bigmenu")
+				{
+					infoList.push(createBigmenu(e.listdata[i]));
+				}
+				
+				if(e.listdata[i].type == "text-r-a")
+				{
+					infoList.push(createtext_r_a(e.listdata[i]));
+				}
+				
+				if(e.listdata[i].type == "text-n")
+				{
+					infoList.push(createtext_n(e.listdata[i]));
+				}
+				
+				if(e.listdata[i].type == "formcss")
+				{
+					infoList.push(createformcss(e.listdata[i]));
+				}
+				
+				infoList.push('<br/>');
+			}
+			
+			$("#list").html(infoList.join(''));
+		}
+		
+		function createmenu(e)
+		{
+		
+			var infoList = Array();
+			if(e.menulist)
+			{
+				infoList.push('<footer class="page-footer fixed-footer bag-blue" id="footer">');
+				infoList.push('<ul>');
+				for (var m = 0; m < e.menulist.length; m++) {
+					infoList.push('<li class="'+getString(e.menulist[m].fouce)+'">');
+					infoList.push('	<a href="'+ e.menulist[m].url +'">');
+					infoList.push('		<i class="iconfont '+ e.menulist[m].icon +'"></i>');
+					infoList.push('		<p>'+ e.menulist[m].text +'</p>');
+					infoList.push('	</a>');
+					infoList.push('</li>');
+				}
+				
+				infoList.push('</ul>');
+				infoList.push('</footer>');
+			}
+			$("#menu").html(infoList.join(''));
+		}
+		
+		
+		function createCation(e)
+		{
+			var cationdatalist = Array();
+			cationdatalist.push('<div class="cation">');
+			if(e.text)
+			{
+				cationdatalist.push('<div class="header-lable clearfloat">');
+				cationdatalist.push('	<div class="lable-l  text-96">');
+				cationdatalist.push('		<span class="f24">'+e.text +'</span>');
+				cationdatalist.push('	</div>');
+				
+				if(e.alldata)
+				{
+					
+				
+					cationdatalist.push('<a href="'+e.alldata.act +'">');
+					cationdatalist.push('	<div class="lable-m">');
+					cationdatalist.push('		<span class="f24">'+e.alldata.text+'</span>');
+					cationdatalist.push('	</div>');
+					cationdatalist.push('	<div class="lable-r">');
+					cationdatalist.push('		<img src="'+e.alldata.img+'" />');
+					cationdatalist.push('	</div>');
+					cationdatalist.push('</a>');
+				}
+				cationdatalist.push('</div>');
+			}
+			
+			
+			if(e.datalist)
+			{
+				cationdatalist.push('<ul class="clearfloat">');
+				for(var j=0; j < e.datalist.length; j++)
+				{
+					cationdatalist.push('<li>');
+					cationdatalist.push('	<a href="'+getString(e.datalist[j].act) +'">');
+					cationdatalist.push('		<img src="'+e.datalist[j].img+'" />');
+					cationdatalist.push('		<p>'+e.datalist[j].text +'</p>');
+					cationdatalist.push('	</a>');
+					cationdatalist.push('</li>');
+				}
+				cationdatalist.push('</ul>');
+			}
+			
+			
+			cationdatalist.push('</div>');
+			
+			return cationdatalist.join('');
+		}
+		
+		function createMainmenu(e)
+		{
+			var mainmenudatalist = Array();
+			mainmenudatalist.push('<ul class="mainmenu">');
+			for(var j=0; j < e.datalist.length; j++)
+			{
+				mainmenudatalist.push('<li>');
+				mainmenudatalist.push('	<a href="'+ getString(e.datalist[j].act) +'" >');
+				mainmenudatalist.push('		<img src="'+e.datalist[j].img +'" />');
+				mainmenudatalist.push('		<p><span>'+e.datalist[j].text +'</span></p>');
+				mainmenudatalist.push('	</a>');
+				mainmenudatalist.push('</li>');
+			
+			}
+			
+			mainmenudatalist.push('</ul>');
+			return mainmenudatalist.join('');
+		}
+		
+		function createBigmenu(e)
+		{
+		
+			var bigmenudatalist = Array();
+			bigmenudatalist.push('<ul class="bigmenu">');
+			for(var j=0; j < e.datalist.length; j++)
+			{
+				bigmenudatalist.push('<li>');
+				bigmenudatalist.push('	<a href="'+ getString(e.datalist[j].act) +'" >');
+				bigmenudatalist.push('		<img src="'+e.datalist[j].img +'" />');
+				bigmenudatalist.push('		<p><span>'+e.datalist[j].text +'</span></p>');
+				bigmenudatalist.push('	</a>');
+				bigmenudatalist.push('</li>');
+			
+			}
+			bigmenudatalist.push('</ul>');
+			return bigmenudatalist.join('');
+		}
+		
+		function createtext_r_a(e)
+		{
+			var text_r_adatalist = Array();
+			text_r_adatalist.push('<div class="text-r">');
+			text_r_adatalist.push('	<a href="'+ e.act +'">'+e.text+'</a>');
+			text_r_adatalist.push('</div>');
+				
+			
+			return text_r_adatalist.join('');
+		}
+		
+		function createtext_n(e)
+		{
+			var text_ndatalist = Array();
+			
+			text_ndatalist.push('<div class="text-n">');	
+			text_ndatalist.push('	<p>'+ e.text +'</p>');
+			text_ndatalist.push('</div>');
+			return text_ndatalist.join('');
+		}
+		
+		function createformcss(e)
+		{
+			var formcssdatalist = Array();
+			formcssdatalist.push('<div');
+			formcssdatalist.push('<div class="formcss">');
+			for(var j=0; j < e.datalist.length; j++)
+			{
+				if(e.datalist[j].type == "l_input")
+				{
+					formcssdatalist.push('<div class="wd-input-row">');
+					formcssdatalist.push('	<label>'+ e.datalist[j].text+'</label>');
+					formcssdatalist.push('	<input type="text" class="mui-input-clear" placeholder="'+ e.datalist[j].placeholder+'">');
+					formcssdatalist.push('</div>');
+				}
+				
+				if(e.datalist[j].type == "btn")
+				{
+					formcssdatalist.push('<div class="wd-button-row">');
+					for(var m=0; m < e.datalist[j].datalist.length; m++)
+					{
+						formcssdatalist.push('	<button type="button" onclick="">'+ e.datalist[j].datalist[m].text+'</button>');
+					}
+					formcssdatalist.push('	</div>');
+				}
+			}
+			formcssdatalist.push('</div>');
+			formcssdatalist.push('</div>');
+			return formcssdatalist.join('');
+		}
+		
+		function getString(e)
+		{
+			if(e)
+				return e+"";
+			else
+				return "";
+		}
+</script>
+</html>

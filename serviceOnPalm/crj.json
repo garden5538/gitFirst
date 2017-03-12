@@ -1,0 +1,32 @@
+﻿{
+    "toptitle":{
+		"text":"出入境",
+		"bgcolor":"bag-blue",
+		"color":"text-fff ",
+		"backdata":{
+			"img":"img/left.png",
+			"act":"index.html"
+		}
+	},
+	
+	"listdata":[
+		{
+			"type":"mainmenu",
+			"datalist":[
+				{
+					"img":"img/bendijuming.png",
+					"act":"crj_bdjm.html",
+					"text":"本地居民"
+				},
+				{
+					"img":"img/waishenjuming.png",
+					"text":"外省居民"
+				},
+				{
+					"img":"img/yewuchaxun.png",
+					"text":"业务查询"
+				}
+			]
+		}
+	]
+}

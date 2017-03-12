@@ -1,0 +1,35 @@
+﻿{
+	"toptitle":{
+		"text":"举报垃圾短信",
+		"color":"text-3c ",
+		"backdata":{
+			"img":"img/left.png",
+			"act":"jb.html"
+		}
+	},
+	"listdata":[
+		{
+			"type":"text-n",
+			"text":"举报人信息"
+		},
+		{
+			"type":"l_input",
+			"text":"您的手机号码",
+			"placeholder":"将用于验证"
+		},
+		{
+			"type":"l_input",
+			"text":"验证码",
+			"placeholder":"请输入后面的字符"
+		},
+		{
+			"type":"text-n",
+			"text":"举报内容"
+		},
+		{
+			"type":"l_input",
+			"text":"发送方号码",
+			"placeholder":"发送垃圾短信的号码"
+		}
+	]
+}

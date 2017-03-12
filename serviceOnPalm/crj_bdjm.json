@@ -1,0 +1,32 @@
+﻿{
+    "toptitle":{
+		"text":"出入境",
+		"bgcolor":"bag-blue",
+		"color":"text-fff ",
+		"backdata":{
+			"img":"img/left.png",
+			"act":"crj.html"
+		}
+	},
+	
+	"listdata":[
+		{
+			"type":"bigmenu",
+			"datalist":[
+				{
+					"img":"img/huzhao.png",
+					"act":"crj_form.html",
+					"text":"中国公民因私出国护照"
+				},
+				{
+					"img":"img/gangaotongxingzheng.png",
+					"text":"内地居民往来港澳通行证"
+				},
+				{
+					"img":"img/taiwantongxingzheng.png",
+					"text":"大陆居民往来台湾通行证"
+				}
+			]
+		}
+	]
+}

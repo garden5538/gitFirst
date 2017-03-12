@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>首页</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <script src="js/rem.js"></script> 
+    <script src="js/jquery.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="css/page.css"/>
+    <link rel="stylesheet" type="text/css" href="css/all.css"/>
+    <link rel="stylesheet" type="text/css" href="css/mui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/loaders.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/loading.css"/>
+    <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+	<link rel="stylesheet" type="text/css" href="css/add.css"/>
+	<script type="text/javascript">
+		$(window).load(function(){
+			$(".loading").addClass("loader-chanage")
+			$(".loading").fadeOut(300)
+		})
+	</script>
+</head>
+<!--loading页开始-->
+<div class="loading">
+	<div class="loader">
+        <div class="loader-inner pacman">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+	</div>
+</div>
+<!--loading页结束-->
+	<body>
+		<div id="main" class="mui-clearfix">
+			<div id="toptitle" class="header-title">
+		</div>
+		<div id='list' class="list">
+			
+		</div>
+	   <div id="menu">
+		
+		</div>
+	</body>
+	<script type="text/javascript" src="js/jquery-1.8.3.min.js" ></script>
+	<script src="js/fastclick.js"></script>
+	<script src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/hmt.js" ></script>
+	<!--插件-->
+	<link rel="stylesheet" href="css/swiper.min.css">
+	<script src="js/swiper.jquery.min.js"></script>
+	<!--插件-->
+
+	<!--搜索点击效果-->
+	<script >
+	    /*jsonstr ='{"toptitle":{"text":"掌上服务","bgcolor":"bag-blue","color":"text-fff "},"listdata":[{"type":"cation","text":"网上政务大厅","datalist":[{"img":"img/fang.png","text":"法人办事"},{"img":"img/chuang.png","text":"个人办事"},{"img":"img/bao.png","text":"审批事项"},{"img":"img/lou.png","text":"服务事项"},{"img":"img/map.png","text":"状态查询"},{"img":"img/people.png","text":"结果反馈"},{"img":"img/woshou.png","text":"办理点查询"},{"img":"img/self.png","text":"白玉兰助手"}]},{"type":"cation","text":"我的服务","alldata":{"text":"更多","img":"img/right.png","act":""},"datalist":[{"img":"img/fang.png","text":"交通出行"},{"img":"img/chuang.png","text":"出入境","act":"crj.html"},{"img":"img/bao.png","text":"婚姻预约"},{"img":"img/lou.png","text":"景区实时信息"}]},{"type":"cation","text":"猜您关注","datalist":[{"img":"img/fang.png","text":"气象信息"},{"img":"img/chuang.png","text":"实时交通"},{"img":"img/bao.png","text":"公积金查询"},{"img":"img/lou.png","text":"税务服务器"}]}],"menulist":[{"fouce":"active","icon":"icon-shouyev1","text":"掌上服务","url":"index.html"},{"fouce":"","icon":"icon-chuzuwo","text":"指尖互动","url":"index.html"},{"fouce":"","icon":"icon-richengbiao","text":"申边政务","url":"index.html"},{"fouce":"","icon":"icon-gerenzhongxin","text":"我的","url":"index.html"}]}';
+		e = JSON.parse(jsonstr);
+		initUI(e);*/
+		
+		var dataroot="index.json"; 
+		var e;
+		$.getJSON(dataroot, function(data){ 
+			e = data;
+			initUI(e);
+		});
+		
+		function initUI(e)
+		{
+			createTitle(e);
+			createList(e);
+			createmenu(e);
+		}
+		
+		function createTitle(e)
+		{
+			var infoList = Array();
+			
+			if(e.toptitle)
+			{
+				infoList.push('	<div class=" header-top text-center   relative '+getString(e.toptitle.bgcolor) + ' ' + getString(e.toptitle.color) +'">');
+				infoList.push('		<span class="f36">'+ getString(e.toptitle.text) +'</span>');	
+				
+				if(e.toptitle.backdata)
+				{
+					infoList.push('<a href="'+ e.toptitle.backdata.act+'">');
+					infoList.push('	<div class="header-back">');
+					infoList.push('		<img src="'+ e.toptitle.backdata.img+'" />');
+					infoList.push('	</div>');
+					infoList.push('</a>');
+				}
+				
+				infoList.push('	</div>');		
+			}
+			
+			$("#toptitle").html(infoList.join(''));
+		}
+		
+		function createList(e)
+		{
+			var infoList = Array();
+			for (var i = 0; i < e.listdata.length; i++) {
+				if(e.listdata[i].type == "cation")
+				{
+					infoList.push(createCation(e.listdata[i]));
+				}
+				infoList.push('<br/>');
+			}
+			infoList.push('<br/>');
+			infoList.push('<br/>');
+			infoList.push('<br/>');
+			infoList.push('<br/>');
+			
+			$("#list").html(infoList.join(''));
+		}
+		
+		function createmenu(e)
+		{
+		
+			var infoList = Array();
+			if(e.menulist)
+			{
+				infoList.push('<footer class="page-footer fixed-footer bag-blue" id="footer">');
+				infoList.push('<ul>');
+				for (var m = 0; m < e.menulist.length; m++) {
+					infoList.push('<li class="'+getString(e.menulist[m].fouce)+'">');
+					infoList.push('	<a href="'+ e.menulist[m].url +'">');
+					infoList.push('		<i class="iconfont '+ e.menulist[m].icon +'"></i>');
+					infoList.push('		<p>'+ e.menulist[m].text +'</p>');
+					infoList.push('	</a>');
+					infoList.push('</li>');
+				}
+				
+				infoList.push('</ul>');
+				infoList.push('</footer>');
+			}
+			$("#menu").html(infoList.join(''));
+		}
+		
+		
+		function createCation(e)
+		{
+			var cationdatalist = Array();
+			cationdatalist.push('<div class="cation">');
+			if(e.text)
+			{
+				cationdatalist.push('<div class="header-lable clearfloat">');
+				cationdatalist.push('	<div class="lable-l  text-96">');
+				cationdatalist.push('		<span class="f24">'+e.text +'</span>');
+				cationdatalist.push('	</div>');
+				
+				if(e.alldata)
+				{
+					
+				
+					cationdatalist.push('<a href="'+e.alldata.act +'">');
+					cationdatalist.push('	<div class="lable-m">');
+					cationdatalist.push('		<span class="f24">'+e.alldata.text+'</span>');
+					cationdatalist.push('	</div>');
+					cationdatalist.push('	<div class="lable-r">');
+					cationdatalist.push('		<img src="'+e.alldata.img+'" />');
+					cationdatalist.push('	</div>');
+					cationdatalist.push('</a>');
+				}
+				cationdatalist.push('</div>');
+			}
+			
+			
+			if(e.datalist)
+			{
+				cationdatalist.push('<ul class="clearfloat">');
+				for(var j=0; j < e.datalist.length; j++)
+				{
+					cationdatalist.push('<li>');
+					cationdatalist.push('	<a href="'+getString(e.datalist[j].act) +'">');
+					cationdatalist.push('		<img src="'+e.datalist[j].img+'" />');
+					cationdatalist.push('		<p>'+e.datalist[j].text +'</p>');
+					cationdatalist.push('	</a>');
+					cationdatalist.push('</li>');
+				}
+				cationdatalist.push('</ul>');
+			}
+			
+			
+			cationdatalist.push('</div>');
+			
+			return cationdatalist.join('');
+		}
+		
+		
+		
+		function getString(e)
+		{
+			if(e)
+				return e+"";
+			else
+				return "";
+		}
+	</script>
+</html>
